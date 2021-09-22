@@ -1,26 +1,27 @@
-def main_func():
-    n = int(input("Enter the N value: "))
+def rec_main(n):
+    if n < 1:
+        return 0
+    if n == 1:
+        return 2
+    if n == 2:
+        return 3
+    return rec_main(n - 1) + rec_main(n - 2);
 
+
+def c_input():
+    return int(input("Enter the N value: "))
+
+
+def check_input(n):
     if n > 1000 or n < 1:
         raise ValueError
 
-    first_bin = '0b' + ('0' * n)
-    count = 0
 
-    while len(first_bin) <= (n + 2):
-        if first_bin.find('11') == -1:
-            count += 1
-        number = int(first_bin, 2) + 1
-        first_bin = bin(number)
-
-    print(f"The answer is {count}")
-
-if __name__ == "__main__":
-    while True:
-        try:
-            main_func()
-            break
-        except ValueError:
-            print("Something gone wrong with input values, lets try again")
-        except ZeroDivisionError:
-            print("Something gone wrong with input values, lets try again")
+if __name__ == '__main__':
+    try:
+        n = c_input()
+        check_input(n)
+        sol = rec_main(n)
+        print(f'The solution is {sol}')
+    except ValueError:
+        print('Smth gone wrong with input')
