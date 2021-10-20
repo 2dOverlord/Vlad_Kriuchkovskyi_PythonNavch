@@ -48,7 +48,7 @@ class LinkedList:
             raise ValueError
         array = []
         for i in range(n):
-            array.append(float(str(random.uniform(1, 10))[:6]))
+            array.append(float(str(random.uniform(a, b))[:6]))
         self.array_to_LL(array)
 
     def add_ell(self):
