@@ -22,16 +22,30 @@ class LinkedList:
             elms.append(str(el.num))
             el = el.next
         elms.append(str(el.num))
+        print(' '.join(elms))
         return ' '.join(elms)
 
-    def array_to_LL(self, array):
-        self.headel = Node(array[0])
+    def array_to_LL(self, array, position=0):
+        if position < 0:
+            raise ValueError
+        if self.headel is None:
+            self.headel = Node(array[0])
+            val = self.headel
+            for num in array[1:]:
+                val.next = Node(num)
+                val = val.next
+        else:
+            val = self.headel
 
-        val = self.headel
+            for i in range(position-1):
+                val = val.next
 
-        for nd in array[1:]:
-            val.next = Node(nd)
-            val = val.next
+            old_next = val.next
+            for num in array[1:]:
+                new_next = Node(num)
+                val.next = new_next
+                val = new_next
+            val.next = old_next
 
     def enter_from_console(self):
         n = int(input('Enter the size of an array: '))
@@ -40,7 +54,7 @@ class LinkedList:
             array.append(float(input(f'Enter the element {i} of array: ')))
         self.array_to_LL(array)
 
-    def generate_random_array(self, use_iterator):
+    def generate_random_array(self, use_iterator, position=0):
         n = int(input('Enter the size of an array: '))
         a = int(input('Enter the first num of range: '))
         b = int(input('Enter the second num of range: '))
@@ -67,7 +81,7 @@ class LinkedList:
                 print('Smth gone wrong with the input: ')
                 raise ValueError
 
-        self.array_to_LL(array)
+        self.array_to_LL(array, position)
 
     def add_ell(self):
         val = self.headel
