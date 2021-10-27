@@ -24,7 +24,6 @@ class LinkedList:
         elms.append(str(el.num))
         return ' '.join(elms)
 
-
     def array_to_LL(self, array):
         self.headel = Node(array[0])
 
@@ -41,7 +40,7 @@ class LinkedList:
             array.append(float(input(f'Enter the element {i} of array: ')))
         self.array_to_LL(array)
 
-    def generate_random_array(self):
+    def generate_random_array(self, use_iterator):
         n = int(input('Enter the size of an array: '))
         a = int(input('Enter the first num of range: '))
         b = int(input('Enter the second num of range: '))
@@ -51,17 +50,22 @@ class LinkedList:
             raise ValueError
 
         array = []
-        option = input('Choose will be iterator or generator used here: ')
-        if option == 'iterator':
+        if use_iterator:
             iterator = Iterator(n, a, b)
             for i in iterator:
                 array.append(i)
-        elif option == 'generator':
-            for i in generate_data(n, a, b):
-                array.append(i)
         else:
-            print('Smth gone wrong with the input: ')
-            raise ValueError
+            option = input('Choose will be iterator or generator used here: ')
+            if option == 'iterator':
+                iterator = Iterator(n, a, b)
+                for i in iterator:
+                    array.append(i)
+            elif option == 'generator':
+                for i in generate_data(n, a, b):
+                    array.append(i)
+            else:
+                print('Smth gone wrong with the input: ')
+                raise ValueError
 
         self.array_to_LL(array)
 
@@ -113,7 +117,7 @@ class LinkedList:
         if k >= len(self):
             raise ValueError('HERE')
         for i in range(len(self)-k):
-            elms = [value_ind]
+            elms = []
             time_val = value_ind
             for j in range(k):
                 elms.append(time_val.next)
