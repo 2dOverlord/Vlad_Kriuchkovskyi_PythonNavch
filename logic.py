@@ -22,17 +22,30 @@ class LinkedList:
             elms.append(str(el.num))
             el = el.next
         elms.append(str(el.num))
+        print(' '.join(elms))
         return ' '.join(elms)
 
+    def array_to_LL(self, array, position=0):
+        if position < 0:
+            raise ValueError
+        if self.headel is None:
+            self.headel = Node(array[0])
+            val = self.headel
+            for num in array[1:]:
+                val.next = Node(num)
+                val = val.next
+        else:
+            val = self.headel
 
-    def array_to_LL(self, array):
-        self.headel = Node(array[0])
+            for i in range(position-1):
+                val = val.next
 
-        val = self.headel
-
-        for nd in array[1:]:
-            val.next = Node(nd)
-            val = val.next
+            old_next = val.next
+            for num in array[1:]:
+                new_next = Node(num)
+                val.next = new_next
+                val = new_next
+            val.next = old_next
 
     def enter_from_console(self):
         n = int(input('Enter the size of an array: '))
@@ -41,7 +54,7 @@ class LinkedList:
             array.append(float(input(f'Enter the element {i} of array: ')))
         self.array_to_LL(array)
 
-    def generate_random_array(self):
+    def generate_random_array(self, use_iterator, position=0):
         n = int(input('Enter the size of an array: '))
         a = int(input('Enter the first num of range: '))
         b = int(input('Enter the second num of range: '))
@@ -51,19 +64,24 @@ class LinkedList:
             raise ValueError
 
         array = []
-        option = input('Choose will be iterator or generator used here: ')
-        if option == 'iterator':
+        if use_iterator:
             iterator = Iterator(n, a, b)
             for i in iterator:
                 array.append(i)
-        elif option == 'generator':
-            for i in generate_data(n, a, b):
-                array.append(i)
         else:
-            print('Smth gone wrong with the input: ')
-            raise ValueError
+            option = input('Choose will be iterator or generator used here: ')
+            if option == 'iterator':
+                iterator = Iterator(n, a, b)
+                for i in iterator:
+                    array.append(i)
+            elif option == 'generator':
+                for i in generate_data(n, a, b):
+                    array.append(i)
+            else:
+                print('Smth gone wrong with the input: ')
+                raise ValueError
 
-        self.array_to_LL(array)
+        self.array_to_LL(array, position)
 
     def add_ell(self):
         val = self.headel
@@ -113,7 +131,7 @@ class LinkedList:
         if k >= len(self):
             raise ValueError('HERE')
         for i in range(len(self)-k):
-            elms = [value_ind]
+            elms = []
             time_val = value_ind
             for j in range(k):
                 elms.append(time_val.next)
